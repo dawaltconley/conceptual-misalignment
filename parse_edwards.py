@@ -64,6 +64,26 @@ keyterms = kt.textrank(doc, normalize="lower", topn=0.1)
 for phrase, score in filter(lambda kt: term in kt[0], keyterms):
     print(f"  {score:.4f}  {phrase}")
 
+# --- keyterm co-occurrence in KWIC windows ---
+
+print(f"\n{'='*60}")
+print(f"KEYTERMS CO-OCCURRING WITH '{term}' IN CONTEXT WINDOWS")
+print(f"{'='*60}\n")
+
+all_keyterms = kt.textrank(doc, normalize="lower", topn=1.0)
+keyterm_phrases = [phrase for phrase, _ in all_keyterms]
+
+cooccurrences = Counter()
+for pre, kw, post in matches:
+    window = (pre + post).lower()
+    for phrase in keyterm_phrases:
+        if phrase != term and phrase in window:
+            cooccurrences[phrase] += 1
+
+for phrase, count in cooccurrences.most_common(20):
+    if count > 1:
+        print(f"  {count:3d}x  {phrase}")
+
 # --- subject/verb/object triples ---
 
 print(f"\n{'='*60}")
