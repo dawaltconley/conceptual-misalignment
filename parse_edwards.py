@@ -2,9 +2,13 @@ from collections import Counter
 from pathlib import Path
 
 import spacy
+import matplotlib.pyplot as plt
+import networkx as nx
 import textacy.extract
 import textacy.extract.keyterms as kt
 import textacy.extract.triples as triples
+import textacy.representations.network as tnet
+import textacy.viz.network as tviz
 from bs4 import BeautifulSoup
 from spacy_html_tokenizer import create_html_tokenizer
 
@@ -83,6 +87,46 @@ for pre, kw, post in matches:
 for phrase, count in cooccurrences.most_common(20):
     if count > 1:
         print(f"  {count:3d}x  {phrase}")
+
+# --- co-occurrence network (whole document, target term highlighted) ---
+
+print(f"\n{'='*60}")
+print(f"CO-OCCURRENCE NETWORK (whole document)")
+print(f"{'='*60}\n")
+
+# build per-sentence keyterm lists as input to the network builder
+top_keyterms = {phrase for phrase, _ in kt.textrank(
+    doc, normalize="lower", topn=50)}
+top_keyterms.add(term)
+
+sent_keyterm_lists = [
+    [p for p in top_keyterms if p in sent.text.lower()]
+    for sent in doc.sents
+]
+sent_keyterm_lists = [s for s in sent_keyterm_lists if len(s) >= 2]
+
+G = tnet.build_cooccurrence_network(sent_keyterm_lists, window_size=100)
+G.remove_nodes_from(list(nx.isolates(G)))
+
+node_weights = tnet.rank_nodes_by_pagerank(G)
+
+ax = tviz.draw_semantic_network(
+    G,
+    node_weights=node_weights,
+    spread=5.0,
+    draw_nodes=True,
+    base_node_size=500,
+    node_alpha=0.2,
+    line_width=1.0,
+    line_alpha=0.25,
+    base_font_size=10,
+)
+
+ax.set_title(
+    f"Keyterm co-occurrence network — '{term}' highlighted", fontsize=14)
+out_path = f"cooccurrence_{term}.png"
+plt.savefig(out_path, bbox_inches="tight", dpi=150)
+print(f"Network saved to {out_path}")
 
 # --- subject/verb/object triples ---
 
