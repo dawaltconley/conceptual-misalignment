@@ -14,8 +14,12 @@ html_path = Path("sep/jonathan-edwards.html")
 html = html_path.read_text(encoding="utf-8")
 
 soup = BeautifulSoup(html, "html.parser")
-article = soup.find("div", id="article-content")
-article_html = str(article)
+article = {
+    "preamble": soup.find("div", id="preamble"),
+    "toc": soup.find("div", id="toc"),
+    "main-text": soup.find("div", id="main-text"),
+}
+article_html = str(article["preamble"]) + str(article["toc"])+ str(article["main-text"])
 
 nlp = spacy.load("en_core_web_sm")
 nlp.tokenizer = create_html_tokenizer()(nlp)
