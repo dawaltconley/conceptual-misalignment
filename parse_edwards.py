@@ -19,7 +19,8 @@ article = {
     "toc": soup.find("div", id="toc"),
     "main-text": soup.find("div", id="main-text"),
 }
-article_html = str(article["preamble"]) + str(article["toc"])+ str(article["main-text"])
+article_html = str(article["preamble"]) + \
+    str(article["toc"]) + str(article["main-text"])
 
 nlp = spacy.load("en_core_web_sm")
 nlp.tokenizer = create_html_tokenizer()(nlp)
@@ -34,7 +35,8 @@ print(f"{'='*60}")
 print(f"NOUN CHUNKS containing '{term}'")
 print(f"{'='*60}\n")
 
-chunks = [chunk.text.lower() for chunk in doc.noun_chunks if term in chunk.text.lower()]
+chunks = [chunk.text.lower()
+          for chunk in doc.noun_chunks if term in chunk.text.lower()]
 counts = Counter(chunks)
 
 print(f"{sum(counts.values())} total occurrences, {len(counts)} distinct chunks\n")
@@ -47,7 +49,8 @@ print(f"\n{'='*60}")
 print(f"KEYWORD IN CONTEXT: '{term}'")
 print(f"{'='*60}\n")
 
-matches = list(textacy.extract.kwic.keyword_in_context(doc, term, window_width=60, pad_context=True))
+matches = list(textacy.extract.kwic.keyword_in_context(
+    doc, term, ignore_case=True, window_width=60, pad_context=True))
 for pre, kw, post in matches:
     print(f"...{pre.strip()} [{kw}] {post.strip()}...")
 
@@ -58,7 +61,7 @@ print(f"TOP KEY TERMS (TextRank)")
 print(f"{'='*60}\n")
 
 keyterms = kt.textrank(doc, normalize="lower", topn=0.1)
-for phrase, score in filter(lambda kt : term in kt[0], keyterms):
+for phrase, score in filter(lambda kt: term in kt[0], keyterms):
     print(f"  {score:.4f}  {phrase}")
 
 # --- subject/verb/object triples ---
@@ -69,8 +72,10 @@ print(f"{'='*60}\n")
 
 svos = list(triples.subject_verb_object_triples(doc))
 
+
 def spans_text(spans):
     return " ".join(s.text for s in spans)
+
 
 hits = [
     t for t in svos
