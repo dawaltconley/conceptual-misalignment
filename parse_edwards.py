@@ -128,6 +128,64 @@ out_path = f"cooccurrence_{term}.png"
 plt.savefig(out_path, bbox_inches="tight", dpi=150)
 print(f"Network saved to {out_path}")
 
+# --- semantic similarity network (whole document, target term highlighted) ---
+
+print(f"\n{'='*60}")
+print(f"SEMANTIC SIMILARITY NETWORK (whole document)")
+print(f"{'='*60}\n")
+
+# tokenize each keyterm phrase for jaccard similarity
+tokenized_keyterms = [tuple(phrase.split()) for phrase in sorted(top_keyterms)]
+
+S = tnet.build_similarity_network(tokenized_keyterms, edge_weighting="jaccard")
+
+# prune very-low-similarity edges to keep graph readable
+low_edges = [(u, v) for u, v, d in S.edges(data=True) if d["weight"] < 0.2]
+S.remove_edges_from(low_edges)
+S.remove_nodes_from(list(nx.isolates(S)))
+
+# use phrase string as node label (nodes are tuples after build_similarity_network)
+label_map = {node: " ".join(node) for node in S.nodes()}
+S = nx.relabel_nodes(S, label_map)
+
+node_weights = tnet.rank_nodes_by_pagerank(S)
+max_weight = max(node_weights.values())
+
+pos = nx.spring_layout(S, seed=42, k=3.0 / (len(S.nodes()) ** 0.5), weight="weight")
+
+edge_weights = [S[u][v]["weight"] for u, v in S.edges()]
+max_ew = max(edge_weights) if edge_weights else 1
+
+fig, ax = plt.subplots(figsize=(16, 12))
+fig.patch.set_facecolor("white")
+ax.set_facecolor("white")
+
+node_sizes = [
+    3000 * (node_weights.get(n, 0) / max_weight) ** 0.5 if n != term else 3000
+    for n in S.nodes()
+]
+node_colors = ["#e07b39" if n == term else "#6aaed6" for n in S.nodes()]
+edge_widths = [3 * w / max_ew for w in edge_weights]
+
+nx.draw_networkx_nodes(S, pos, node_size=node_sizes, node_color=node_colors,
+                       alpha=0.85, ax=ax)
+nx.draw_networkx_edges(S, pos, width=edge_widths, alpha=0.4,
+                       edge_color="#888888", ax=ax)
+for node, (x, y) in pos.items():
+    ax.text(x, y, node,
+            fontsize=11 if node == term else 8,
+            fontweight="bold" if node == term else "normal",
+            color="#c0440a" if node == term else "#333333",
+            ha="center", va="center")
+
+ax.set_title(f"Keyterm similarity network (Jaccard) — '{term}' highlighted",
+             fontsize=14)
+ax.axis("off")
+plt.tight_layout()
+out_path = f"similarity_{term}.png"
+plt.savefig(out_path, bbox_inches="tight", dpi=150)
+print(f"Network saved to {out_path}")
+
 # --- subject/verb/object triples ---
 
 print(f"\n{'='*60}")
