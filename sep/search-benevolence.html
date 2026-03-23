@@ -1,0 +1,776 @@
+
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie6 ie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 ie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 ie"> <![endif]-->
+<!--[if IE 9]>    <html class="ie9 ie"> <![endif]-->
+<!--[if !IE]> --> <html lang="en"> <!-- <![endif]-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Search (Stanford Encyclopedia of Philosophy)</title>
+
+<!-- NOTE: Import webfonts using this link: -->
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,200' rel='stylesheet' type='text/css' />
+
+<link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/font-awesome.min.css" />
+<!--[if IE 7]> <link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/font-awesome-ie7.min.css"> <![endif]-->
+<link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/style.css" />
+<link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/entry.css" />
+<!--[if IE]> <link rel="stylesheet" type="text/css" href="https://plato.stanford.edu/css/ie.css" /> <![endif]-->
+<script type="text/javascript" src="https://plato.stanford.edu/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="https://plato.stanford.edu/js/bootstrap.min.js"></script>
+
+<!-- SEP custom script -->
+<script type="text/javascript" src="https://plato.stanford.edu/js/sep.js"></script>
+</head>
+
+ <!-- NOTE: The nojs class is removed from the page if javascript is enabled. Otherwise, it drives the display when there is no javascript. -->
+<body class="nojs homepage">
+
+  <div id="container">
+
+  <!--  BEGINING OF THE CONTAINER  -->
+
+
+
+
+
+
+
+    <div id="header-wrapper">
+      <div id="header">
+
+        <div id="branding">
+          <div id="site-logo"><a href="../index.html"><img src="https://plato.stanford.edu/symbols/sep-man-red.png" alt="SEP logo" /></a></div>
+          <div id="site-title"><a href="../index.html">Stanford Encyclopedia of Philosophy</a></div>
+        </div>
+        
+        <div id="navigation">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="container">
+                <button class="btn btn-navbar collapsed" data-target=".nav-collapse" data-toggle="collapse" type="button">
+                  <i class="icon-reorder"></i> Menu
+                </button>
+                <div class="nav-collapse in collapse">
+                  <ul class="nav">
+                    <li class="dropdown open"><a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="icon-book"></i> Browse</a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                        <li><a href="../contents.html">Table of Contents</a></li>
+                        <li><a href="../new.html">What's New</a></li>
+                        <li><a href="http://plato.stanford.edu/cgi-bin/encyclopedia/random">Random Entry</a></li>
+                        <li><a href="../published.html">Chronological</a></li>
+                        <li><a href="../archives/">Archives</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown open"><a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="icon-info-sign"></i> About</a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                        <li><a href="../info.html">Editorial Information</a></li>
+                        <li><a href="../about.html">About the SEP</a></li>
+                        <li><a href="../board.html">Editorial Board</a></li>
+                        <li><a href="../cite.html">How to Cite the SEP</a></li>
+                        <li><a href="../special-characters.html">Special Characters</a></li>
+                        <li><a href="../tools/">Advanced Tools</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown open"><a id="drop3" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="icon-leaf"></i> Support SEP</a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+                        <li><a href="../support/">Support the SEP</a></li>
+                        <li><a href="../support/friends.html">PDFs for SEP Friends</a></li>
+                        <li><a href="../support/donate.html">Make a Donation</a></li>
+                        <li><a href="../support/sepia.html">SEPIA for Libraries</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- End navigation -->
+
+      </div> <!-- End header -->
+    </div><!-- End header wrapper -->
+
+
+
+
+
+
+
+
+
+
+<!--
+http://localhost:8983/solr/current/select?wt=json&debugQuery=true&hl=true&hl.tag.pre=<b>&hl.tag.post=</b>&hl.snippets=3&hl.fields=content+title&defType=edismax&tie=0.1&hl.useFastVectorHighlighter=true&hl.boundaryScanner=breakIterator&hl.bs.type=WORD&hl.bs.chars=.,!?|	
+&hl.bs.maxScan=250&q=benevolence&start=0&rows=10&qf=content+title^10&bf=if(field(is_supplement),10,1000)
+-->
+
+
+
+    <div id="content"><!--DO NOT MODIFY THIS LINE AND ABOVE-->
+
+<h1>
+
+Search
+
+</h1>
+
+<div class="searchpage">
+  <div id="search" class="search-suggest">
+    <form id="search-form" method="get" action="https://plato.stanford.edu/search/search">
+
+      <input class="typeahead" type="search" name="query" value="benevolence">
+
+
+
+      <div class="search-btn-wrapper">
+    <button class="btn search-btn" type="submit" title="Search"><i class="icon-search icon-2x"></i></button>
+      </div>
+    </form>
+  </div>
+<div class="search_results">
+
+<div class="search_total">1&ndash;10 of 176 documents found</div><!-- end search_total -->
+
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/edwards/&page=1&total_hits=176&pagesize=10&archive=None&rank=0&query=benevolence">Jonathan Edwards
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+reality, so too is <b>benevolence</b>'s delight in <b>benevolence</b>. (3) But a
+delight in <b>benevolence</b> just is a perception<b>...</b>
+love two things — being and <b>benevolence</b>. They not only value
+<b>benevolence</b> because it promotes the general<b>...</b>sense it includes not only <b>benevolence</b> but also
+“complacence” in <b>benevolence</b>'s intrinsic excellence or
+<b>...</b>
+<!--
+
+10.753939 = (MATCH) sum of:
+  0.00972757 = (MATCH) max plus 0.1 times others of:
+    0.00972757 = (MATCH) weight(content:benevolence in 1967) [DefaultSimilarity], result of:
+      0.00972757 = score(doc=1967,freq=37.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.23190781 = fieldWeight in 1967, product of:
+          6.0827627 = tf(freq=37.0), with freq of:
+            37.0 = termFreq=37.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.009765625 = fieldNorm(doc=1967)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">William Wainwright
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/edwards/&page=1&total_hits=176&pagesize=10&archive=None&rank=0&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/edwards/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/butler-moral/&page=1&total_hits=176&pagesize=10&archive=None&rank=1&query=benevolence">Joseph Butler’s Moral Philosophy
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+ principles of human nature
+5. Self-Love and <b>Benevolence</b>
+6. Compassion, Resentment, and Forgiveness
+7.<b>...</b>human nature Butler argues that self-love and <b>benevolence</b> or virtue --
+principles that other moral philosophers<b>...</b>features of moral psychology — self-deception, <b>benevolence</b>,
+forgiveness, compassion — and further develop<b>...</b>
+<!--
+
+10.752046 = (MATCH) sum of:
+  0.0078344615 = (MATCH) max plus 0.1 times others of:
+    0.0078344615 = (MATCH) weight(content:benevolence in 2074) [DefaultSimilarity], result of:
+      0.0078344615 = score(doc=2074,freq=24.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.18677561 = fieldWeight in 2074, product of:
+          4.8989797 = tf(freq=24.0), with freq of:
+            24.0 = termFreq=24.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.009765625 = fieldNorm(doc=2074)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Aaron Garrett
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/butler-moral/&page=1&total_hits=176&pagesize=10&archive=None&rank=1&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/butler-moral/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/gratitude/&page=1&total_hits=176&pagesize=10&archive=None&rank=2&query=benevolence">Gratitude
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+ being recognized for their
+<b>benevolence</b>, or knowing that their <b>benevolence</b> accomplished its
+goal.
+
+
+Aside<b>...</b>original proactive <b>benevolence</b> that motivated the original
+benefactor’s <b>benevolence</b> in the first place<b>...</b>or called for in response to mere “heartfelt
+<b>benevolence</b>”, even in the absence of any acts or attempts<b>...</b>
+<!--
+
+10.751449 = (MATCH) sum of:
+  0.007237165 = (MATCH) max plus 0.1 times others of:
+    0.007237165 = (MATCH) weight(content:benevolence in 2790) [DefaultSimilarity], result of:
+      0.007237165 = score(doc=2790,freq=32.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.1725359 = fieldWeight in 2790, product of:
+          5.656854 = tf(freq=32.0), with freq of:
+            32.0 = termFreq=32.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.0078125 = fieldNorm(doc=2790)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Tony Manela
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/gratitude/&page=1&total_hits=176&pagesize=10&archive=None&rank=2&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/gratitude/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/principle-beneficence/&page=1&total_hits=176&pagesize=10&archive=None&rank=3&query=benevolence">The Principle of Beneficence in Applied Ethics
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+make motives of
+<b>benevolence</b> all important in moral life. He argues that natural
+<b>benevolence</b> accounts, in <b>...</b>and maintains that <b>benevolence</b> is an “original” feature of
+human nature. <b>Benevolence</b> is Hume’s most important<b>...</b>Although he speaks of both
+<b>benevolence</b> and justice as social virtues, only <b>benevolence</b> is a
+constitutive principle<b>...</b>
+<!--
+
+10.751219 = (MATCH) sum of:
+  0.007007355 = (MATCH) max plus 0.1 times others of:
+    0.007007355 = (MATCH) weight(content:benevolence in 1459) [DefaultSimilarity], result of:
+      0.007007355 = score(doc=1459,freq=30.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.16705717 = fieldWeight in 1459, product of:
+          5.477226 = tf(freq=30.0), with freq of:
+            30.0 = termFreq=30.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.0078125 = fieldNorm(doc=1459)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Tom Beauchamp
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/principle-beneficence/&page=1&total_hits=176&pagesize=10&archive=None&rank=3&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/principle-beneficence/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/mencius/&page=1&total_hits=176&pagesize=10&archive=None&rank=4&query=benevolence">Mencius
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+devotes the most
+discussion to <b>benevolence</b> and righteousness. <b>Benevolence</b> is manifested
+in the affection<b>...</b>secondary in importance
+to <b>benevolence</b> and righteousness: “The core of <b>benevolence</b> is
+serving one’s parents<b>...</b>
+noun referring to specific virtues, such as <b>benevolence</b>, courage, and
+ wisdom.[4]
+ Although de is thus<b>...</b>
+<!--
+
+10.751101 = (MATCH) sum of:
+  0.0068895756 = (MATCH) max plus 0.1 times others of:
+    0.0068895756 = (MATCH) weight(content:benevolence in 236) [DefaultSimilarity], result of:
+      0.0068895756 = score(doc=236,freq=29.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.16424929 = fieldWeight in 236, product of:
+          5.3851647 = tf(freq=29.0), with freq of:
+            29.0 = termFreq=29.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.0078125 = fieldNorm(doc=236)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Bryan Van Norden
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/mencius/&page=1&total_hits=176&pagesize=10&archive=None&rank=4&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/mencius/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/confucius/&page=1&total_hits=176&pagesize=10&archive=None&rank=5&query=benevolence">Confucius
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+the root of <b>benevolence</b>?”
+(1.2). Confucius tells his disciple Yan Yuan 顏淵 that
+<b>benevolence</b> is a matter<b>...</b>formation.
+
+
+Once, when speaking of cultivating <b>benevolence</b>, Confucius explained
+how ritual value was connected<b>...</b>the gentleman most central to the
+Analects are <b>benevolence</b> (ren 仁),
+righteousness (yi 義), ritual propriety<b>...</b>
+<!--
+
+10.750212 = (MATCH) sum of:
+  0.00600074 = (MATCH) max plus 0.1 times others of:
+    0.00600074 = (MATCH) weight(content:benevolence in 490) [DefaultSimilarity], result of:
+      0.00600074 = score(doc=490,freq=22.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.14305921 = fieldWeight in 490, product of:
+          4.690416 = tf(freq=22.0), with freq of:
+            22.0 = termFreq=22.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.0078125 = fieldNorm(doc=490)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Mark Csikszentmihalyi
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/confucius/&page=1&total_hits=176&pagesize=10&archive=None&rank=5&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/confucius/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/emily-elizabeth-constance-jones/&page=1&total_hits=176&pagesize=10&archive=None&rank=6&query=benevolence">Emily Elizabeth Constance Jones
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+self-interest)
+from <b>benevolence</b> (Jones 1917–18, 323): “The reasonableness of
+<b>benevolence</b> implies the reasonableness<b>...</b>would thus appear that <b>Benevolence</b> implies Self-Love, and Rational
+<b>Benevolence</b> irresistibly leads us back<b>...</b>. ME argues at
+length for the rationality of <b>benevolence</b>: that our actions should
+have “Universal Good<b>...</b>
+<!--
+
+10.750212 = (MATCH) sum of:
+  0.00600074 = (MATCH) max plus 0.1 times others of:
+    0.00600074 = (MATCH) weight(content:benevolence in 1005) [DefaultSimilarity], result of:
+      0.00600074 = score(doc=1005,freq=22.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.14305921 = fieldWeight in 1005, product of:
+          4.690416 = tf(freq=22.0), with freq of:
+            22.0 = termFreq=22.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.0078125 = fieldNorm(doc=1005)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Gary Ostertag
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/emily-elizabeth-constance-jones/&page=1&total_hits=176&pagesize=10&archive=None&rank=6&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/emily-elizabeth-constance-jones/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/hutcheson/&page=1&total_hits=176&pagesize=10&archive=None&rank=7&query=benevolence">Francis Hutcheson
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+diminish the <b>Benevolence</b> of the Action, or the
+publick Good intended by it. Thus <b>Benevolence</b> toward the <b>...</b>Normative Ethics
+   
+   2.1 Self-Interest and <b>Benevolence</b>
+   2.2 Virtue and Utility
+   2.3 Virtue, Happiness<b>...</b>British
+utilitarianism.
+
+2.1 Self-Interest and <b>Benevolence</b>
+
+
+To begin, Hutcheson believed that the most <b>...</b>
+<!--
+
+10.750212 = (MATCH) sum of:
+  0.00600074 = (MATCH) max plus 0.1 times others of:
+    0.00600074 = (MATCH) weight(content:benevolence in 2711) [DefaultSimilarity], result of:
+      0.00600074 = score(doc=2711,freq=22.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.14305921 = fieldWeight in 2711, product of:
+          4.690416 = tf(freq=22.0), with freq of:
+            22.0 = termFreq=22.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.0078125 = fieldNorm(doc=2711)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Dale Dorsey
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/hutcheson/&page=1&total_hits=176&pagesize=10&archive=None&rank=7&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/hutcheson/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/wang-yangming/&page=1&total_hits=176&pagesize=10&archive=None&rank=8&query=benevolence">Wang Yangming
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+four cardinal virtues: <b>benevolence</b>,
+righteousness, wisdom, and propriety. <b>Benevolence</b> is manifested in the<b>...</b>sporadic and inconsistent. Thus, a king who shows
+<b>benevolence</b> when he takes pity on an ox being led to slaughter<b>...</b>slaughter and
+spares it may fail to show <b>benevolence</b> in his treatment of his own
+subjects (Mengzi 1A7). <b>...</b>
+<!--
+
+10.748443 = (MATCH) sum of:
+  0.0042310925 = (MATCH) max plus 0.1 times others of:
+    0.0042310925 = (MATCH) weight(content:benevolence in 2335) [DefaultSimilarity], result of:
+      0.0042310925 = score(doc=2335,freq=7.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.10087035 = fieldWeight in 2335, product of:
+          2.6457512 = tf(freq=7.0), with freq of:
+            7.0 = termFreq=7.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.009765625 = fieldNorm(doc=2335)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">Bryan Van Norden
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/wang-yangming/&page=1&total_hits=176&pagesize=10&archive=None&rank=8&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/wang-yangming/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+<div class="result_listing">
+<div class="result_title"><a class=l href="https://plato.stanford.edu/search/r?entry=/entries/hume/&page=1&total_hits=176&pagesize=10&archive=None&rank=9&query=benevolence">David Hume
+
+</a>
+</div><!-- end result_title -->
+<div class="result_snippet">
+how God’s mercy and <b>benevolence</b>
+can possibly resemble human mercy and <b>benevolence</b>. Given God’s
+omnipotence<b>...</b>than we have to think that his
+<b>benevolence</b> resembles human <b>benevolence</b>. We have even less reason, in
+fact<b>...</b>special moral sense that
+disposes us to respond to <b>benevolence</b> with the distinctive feelings of
+approbation.<b>...</b>
+<!--
+
+10.748167 = (MATCH) sum of:
+  0.0039562085 = (MATCH) max plus 0.1 times others of:
+    0.0039562085 = (MATCH) weight(content:benevolence in 2199) [DefaultSimilarity], result of:
+      0.0039562085 = score(doc=2199,freq=17.0), product of:
+        0.04194585 = queryWeight, product of:
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.010744211 = queryNorm
+        0.09431705 = fieldWeight in 2199, product of:
+          4.1231055 = tf(freq=17.0), with freq of:
+            17.0 = termFreq=17.0
+          3.9040418 = idf(docFreq=221, maxDocs=4051)
+          0.005859375 = fieldNorm(doc=2199)
+  10.744211 = (MATCH) FunctionQuery(if(bool(is_supplement),const(10),const(1000))), product of:
+    1000.0 = if(bool(is_supplement)=false,const(10),const(1000))
+    1.0 = boost
+    0.010744211 = queryNorm
+
+-->
+</div><!-- end result_snippet -->
+
+<div class="result_author">William Edward Morris and Charlotte R. Brown
+</div>
+
+<!-- end result_author -->
+
+
+<div class="result_url">
+<a href="https://plato.stanford.edu/search/r?entry=/entries/hume/&page=1&total_hits=176&pagesize=10&archive=None&rank=9&query=benevolence" style="color:#4C83AF;">https://plato.stanford.edu/entries/hume/</a>
+</div><!-- end result_url -->
+</div><!-- end result_listing -->
+
+
+
+
+	            <div style="font-family:Arial, Helvetica, sans-serif; margin-top:20px;font-size:13pt; width:30em; font-weight:bold;"align="left " class="PagingNav">
+
+	                
+	                    Prev
+                    
+
+                    
+                        
+                                <span>1</span>
+	                    
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=2&query=benevolence&prepend=None">2</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=3&query=benevolence&prepend=None">3</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=4&query=benevolence&prepend=None">4</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=5&query=benevolence&prepend=None">5</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=6&query=benevolence&prepend=None">6</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=7&query=benevolence&prepend=None">7</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=8&query=benevolence&prepend=None">8</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=9&query=benevolence&prepend=None">9</a>
+                            
+                        
+	                
+                        
+	                       
+                                <a href="https://plato.stanford.edu/search/search?page=10&query=benevolence&prepend=None">10</a>
+                            
+                        
+	                
+
+	                
+                        
+                            <a href="https://plato.stanford.edu/search/search?page=2&query=benevolence&prepend=None">Next</a>
+                        
+                    
+
+
+
+
+
+
+
+</div><!-- end search_results -->
+</div><!-- end searchpage -->
+
+    </div> <!-- End content --><!--DO NOT MODIFY THIS LINE AND BELOW-->
+
+
+
+
+
+
+    <div id="footer" class="scroll-block">
+
+      <div id="footer-menu">
+        <div class="menu-block">
+          <h4><i class="icon-book"></i> Browse</h4>
+          <ul role="menu">
+            <li role="menuitem"><a href="../contents.html">Table of Contents</a></li>
+            <li role="menuitem"><a href="../new.html">What's New</a></li>
+            <li role="menuitem"><a href="https://plato.stanford.edu/cgi-bin/encyclopedia/random">Random Entry</a></li>
+            <li role="menuitem"><a href="../published.html">Chronological</a></li>
+            <li role="menuitem"><a href="../archives/">Archives</a></li>
+          </ul>
+        </div>
+        <div class="menu-block">
+          <h4><i class="icon-info-sign"></i> About</h4>
+          <ul role="menu">
+            <li role="menuitem"><a href="../info.html">Editorial Information</a></li>
+            <li role="menuitem"><a href="../about.html">About the SEP</a></li>
+            <li role="menuitem"><a href="../board.html">Editorial Board</a></li>
+            <li role="menuitem"><a href="../cite.html">How to Cite the SEP</a></li>
+            <li role="menuitem"><a href="../special-characters.html">Special Characters</a></li>
+            <li role="menuitem"><a href="../tools/">Advanced Tools</a></li>
+            <li role="menuitem"><a href="../contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="menu-block">
+          <h4><i class="icon-leaf"></i> Support SEP</h4>
+          <ul role="menu">
+            <li role="menuitem"><a href="../support/">Support the SEP</a></li>
+            <li role="menuitem"><a href="../support/friends.html">PDFs for SEP Friends</a></li>
+            <li role="menuitem"><a href="../support/donate.html">Make a Donation</a></li>
+            <li role="menuitem"><a href="../support/sepia.html">SEPIA for Libraries</a></li>
+          </ul>
+        </div>
+      </div> <!-- End footer menu -->
+
+      <div id="mirrors">
+        <div id="mirror-info">
+          <h4><i class="icon-globe"></i> Mirror Sites</h4>
+          <p>View this site from another server:</p>
+        </div>
+        <div class="btn-group open">
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="https://plato.stanford.edu/">
+            <span class="flag flag-usa"></span> USA (Main Site) <span class="caret"></span>
+            <span class="mirror-source">CSLI, Stanford University</span>
+          </a>
+          <ul class="dropdown-menu">
+	    <li><a href="../../mirrors.html">Info about mirror sites</a></li>
+          </ul>
+        </div>
+      </div> <!-- End mirrors -->
+
+      <div id="site-credits">
+        <p class="csli-logo"><a href="http://www-csli.stanford.edu/"><img src="http://plato.stanford.edu/symbols/SU_csli.png" width="355" alt="Stanford Center for the Study of Language and Information" /></a></p>
+        <p>The Stanford Encyclopedia of Philosophy is <a href="../info.html#c">copyright © 2026</a> by <a href="http://mally.stanford.edu">The Metaphysics Research Lab</a>, Center for the Study of Language and Information (CSLI), Stanford University</p>
+        <p>Library of Congress Catalog Data: ISSN 1095-5054</p>
+      </div> <!-- End site credits -->
+
+    </div> <!-- End footer -->
+
+  </div> <!-- End container -->
+
+   <!-- NOTE: Script required for drop-down button to work (mirrors). -->
+  <script>
+    $('.dropdown-toggle').dropdown();
+  </script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40353515-1', 'stanford.edu');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
