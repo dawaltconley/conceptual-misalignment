@@ -1,3 +1,4 @@
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -128,6 +129,12 @@ out_path = f"cooccurrence_{term}.png"
 plt.savefig(out_path, bbox_inches="tight", dpi=150)
 print(f"Network saved to {out_path}")
 
+json_path = f"cooccurrence_{term}.json"
+Path(json_path).write_text(
+    json.dumps(nx.node_link_data(G), indent=2), encoding="utf-8"
+)
+print(f"Network JSON saved to {json_path}")
+
 # --- semantic similarity network (whole document, target term highlighted) ---
 
 print(f"\n{'='*60}")
@@ -185,6 +192,12 @@ plt.tight_layout()
 out_path = f"similarity_{term}.png"
 plt.savefig(out_path, bbox_inches="tight", dpi=150)
 print(f"Network saved to {out_path}")
+
+json_path = f"similarity_{term}.json"
+Path(json_path).write_text(
+    json.dumps(nx.node_link_data(S), indent=2), encoding="utf-8"
+)
+print(f"Network JSON saved to {json_path}")
 
 # --- subject/verb/object triples ---
 
