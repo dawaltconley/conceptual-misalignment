@@ -1,11 +1,12 @@
 """
 Co-occurrence and semantic similarity networks for a target term in classical Chinese.
 Nodes: content tokens from CLTK's lzh (Classical Chinese) model, frequency-filtered.
-Co-occurrence edges: sentence-level co-occurrence counts.
+Co-occurrence edges: positive PMI (terms that appear together more than chance predicts).
 Similarity edges: cosine similarity of sentence co-occurrence context vectors.
 """
 
 import json
+import math
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -36,7 +37,7 @@ tviz.RC_PARAMS["font.sans-serif"] = ["Noto Sans CJK JP", "sans-serif"]
 TEXT_PATH = Path("mengzi_6a.txt")
 TERM = "仁"
 MIN_FREQ = 3        # minimum total occurrences to be a node
-SIM_THRESHOLD = 0.15  # minimum cosine similarity for a similarity edge
+SIM_THRESHOLD = 0.5  # minimum cosine similarity for a similarity edge
 MAX_NODES = 15      # max non-TERM nodes to keep (1-hop first, then 2-hop)
 
 STOPWORDS: set[str] = {
@@ -128,11 +129,49 @@ sent_node_lists: list[list[str]] = [
 sent_node_lists = [s for s in sent_node_lists if len(s) >= 2]
 print(f"Sentences with ≥2 content nodes: {len(sent_node_lists)}")
 
-# --- co-occurrence network ---
+# --- co-occurrence network (PMI-weighted) ---
+# PMI(a,b) = log( P(a,b) / (P(a) * P(b)) )
+# Only keep edges where PMI > 0 (co-occur more than chance predicts).
 
-G = tnet.build_cooccurrence_network(sent_node_lists, window_size=100)
+N_sents = len(sent_node_lists)
+sent_freq: Counter[str] = Counter(
+    tok for sent in sent_node_lists for tok in set(sent)
+)
+
+G = nx.Graph()
+G.add_nodes_from(nodes)
+pair_cooc: Counter[tuple[str, str]] = Counter()
+for sent in sent_node_lists:
+    unique = sorted({t for t in sent if t in nodes})
+    for i, a in enumerate(unique):
+        for b in unique[i + 1:]:
+            pair_cooc[(a, b)] += 1
+
+for (a, b), cooc in pair_cooc.items():
+    pmi = math.log((cooc * N_sents) / (sent_freq[a] * sent_freq[b]))
+    if pmi > 0:
+        G.add_edge(a, b, weight=pmi)
+
 G.remove_nodes_from(list(nx.isolates(G)))
 G = prune_to_neighborhood(G, TERM, MAX_NODES)
+
+# --- PMI of top-20 most frequent characters relative to TERM ---
+
+print(f"\n{'='*60}")
+print(f"PMI of 20 most-frequent characters relative to '{TERM}'")
+print(f"{'='*60}")
+print(f"  {'char':>4}  {'freq':>5}  {'pmi':>8}")
+print(f"  {'-'*4}  {'-'*5}  {'-'*8}")
+for tok, tok_freq in [(t, c) for t, c in freq.most_common() if t not in STOPWORDS][:20]:
+    cooc = pair_cooc.get((min(tok, TERM), max(tok, TERM)), 0)
+    if cooc == 0 or sent_freq[TERM] == 0:
+        pmi_val = float("-inf")
+        pmi_str = "   -inf"
+    else:
+        pmi_val = math.log((cooc * N_sents) /
+                           (sent_freq[tok] * sent_freq[TERM]))
+        pmi_str = f"{pmi_val:8.3f}"
+    print(f"  {tok:>4}  {tok_freq:>5}  {pmi_str}")
 
 print(
     f"\nCo-occurrence — nodes: {G.number_of_nodes()}  edges: {G.number_of_edges()}")
