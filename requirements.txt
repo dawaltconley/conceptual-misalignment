@@ -27,6 +27,7 @@ floret @ git+https://github.com/dwvisser/floret.git@f95b72effea5e2131ec54de5bd04
 fonttools==4.62.1
 fsspec==2026.3.0
 idna==3.11
+iniconfig==2.3.0
 jellyfish==1.2.1
 Jinja2==3.1.6
 joblib==1.5.3
@@ -59,6 +60,7 @@ nvidia-nvtx==13.0.85
 packaging==26.0
 pillow==12.1.1
 platformdirs==4.9.6
+pluggy==1.6.0
 preshed==3.0.12
 protobuf==7.34.1
 pycodestyle==2.14.0
@@ -68,6 +70,7 @@ Pygments==2.19.2
 pyparsing==3.3.2
 pyphen==0.17.2
 pyright==1.1.408
+pytest==9.0.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
 regex==2026.4.4
