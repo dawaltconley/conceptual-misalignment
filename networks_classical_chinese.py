@@ -1,13 +1,14 @@
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
-import yake
 import matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
 import textacy.representations.network as tnet
 import textacy.viz.network as tviz
+from cltk import NLP
 from matplotlib import font_manager
 
 font_manager.fontManager.addfont(
@@ -15,6 +16,7 @@ font_manager.fontManager.addfont(
 _cjk_prop = font_manager.FontProperties(
     fname="/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc")
 matplotlib.rcParams["font.family"] = _cjk_prop.get_name()
+print('font: ' + matplotlib.rcParams["font.family"])
 
 # --- config ---
 
@@ -30,23 +32,47 @@ raw_text = text_path.read_text(encoding="utf-8")
 sentences = re.split(r"[。；！？\n]", raw_text)
 sentences = [s.strip() for s in sentences if s.strip()]
 
-# --- YAKE keyterm extraction ---
-# Classical Chinese has no spaces, so we insert a space between every CJK
-# character before passing to YAKE and use lan="en" to force whitespace
-# tokenization. After extraction we strip the spaces back out.
+# --- CLTK tokenization ---
+# Use stanza's lzh (Classical Chinese) model so YAKE gets linguistically
+# meaningful token boundaries rather than a naive character-by-character split.
 
-def cjk_spaced(text: str) -> str:
-    chars = [ch if "\u4e00" <= ch <= "\u9fff" else " " for ch in text]
-    return " ".join("".join(chars).split())
+cltk_nlp = NLP(language_code="lzh")
+doc = cltk_nlp.analyze(text=raw_text)
+
+# Keep only tokens that are entirely CJK characters — stanza also produces
+# punctuation tokens (:, 「, 。, ,) which corrupt YAKE's statistics.
 
 
-spaced = cjk_spaced(raw_text)
-kw_extractor = yake.KeywordExtractor(lan="en", n=2, dedupLim=0.9, top=yake_total)
-raw_keyterms = kw_extractor.extract_keywords(spaced)
-raw_keyterms.sort(key=lambda x: x[1])  # lower score = more salient
+def is_cjk(s: str) -> bool:
+    return bool(s) and all("\u4e00" <= c <= "\u9fff" for c in s)
 
-# strip spaces back out so keyterms are contiguous Chinese characters
-keyterm_phrases = [kw.replace(" ", "") for kw, _ in raw_keyterms]
+
+tokens = [w.string for w in doc.words if is_cjk(w.string)]
+
+# --- frequency-based keyterm extraction ---
+# YAKE's statistical model doesn't transfer to classical Chinese, so we rank
+# by token frequency instead, excluding grammatical function words.
+
+# Classical Chinese particles, pronouns, connectives, and auxiliaries that
+# carry little conceptual content on their own.
+STOPWORDS: set[str] = {
+    # particles
+    "之", "也", "乎", "矣", "焉", "哉", "邪", "耳", "已", "與",
+    # connectives / adverbs
+    "而", "則", "以", "且", "雖", "若", "如", "猶", "亦", "故", "乃", "夫",
+    # pronouns / demonstratives
+    "我", "吾", "汝", "其", "此", "彼", "是", "之",
+    # auxiliaries / copulas
+    "有", "無", "為", "曰", "謂", "不", "非", "所", "者", "於", "豈",
+    # other high-frequency function words
+    "然", "得", "能", "可", "將", "及", "皆", "未",
+}
+
+freq = Counter(tokens)
+keyterm_phrases = [
+    tok for tok, _ in freq.most_common(yake_total)
+    if tok not in STOPWORDS and len(tok) >= 1
+]
 
 # always include the target term
 top_keyterms = set(keyterm_phrases[:top_n])
@@ -86,7 +112,8 @@ else:
         line_alpha=0.25,
         base_font_size=10,
     )
-    ax.set_title(f"Keyterm co-occurrence network — '{term}' highlighted", fontsize=14)
+    ax.set_title(
+        f"Keyterm co-occurrence network — '{term}' highlighted", fontsize=14)
     out = f"cooccurrence_{term}.png"
     plt.savefig(out, bbox_inches="tight", dpi=150)
     plt.close()
@@ -109,7 +136,8 @@ S.remove_nodes_from(list(nx.isolates(S)))
 label_map = {node: "".join(node) for node in S.nodes()}
 S = nx.relabel_nodes(S, label_map)
 
-print(f"\nSimilarity network — Nodes: {S.number_of_nodes()}  Edges: {S.number_of_edges()}")
+print(
+    f"\nSimilarity network — Nodes: {S.number_of_nodes()}  Edges: {S.number_of_edges()}")
 
 if S.number_of_nodes() == 0:
     print("  Similarity network is empty — no keyterm pairs above Jaccard threshold.")
@@ -129,7 +157,8 @@ else:
     ax.set_facecolor("white")
 
     node_sizes = [
-        3000 * (node_weights.get(n, 0) / max_weight) ** 0.5 if n != term else 3000
+        3000 * (node_weights.get(n, 0) /
+                max_weight) ** 0.5 if n != term else 3000
         for n in S.nodes()
     ]
     node_colors = ["#e07b39" if n == term else "#6aaed6" for n in S.nodes()]
