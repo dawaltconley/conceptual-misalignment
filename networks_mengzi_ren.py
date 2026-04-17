@@ -37,6 +37,7 @@ TEXT_PATH = Path("mengzi_6a.txt")
 TERM = "仁"
 MIN_FREQ = 3        # minimum total occurrences to be a node
 SIM_THRESHOLD = 0.15  # minimum cosine similarity for a similarity edge
+MAX_NODES = 15      # max non-TERM nodes to keep (1-hop first, then 2-hop)
 
 STOPWORDS: set[str] = {
     # sentence-final and modal particles
@@ -56,6 +57,32 @@ STOPWORDS: set[str] = {
 
 def is_cjk(s: str) -> bool:
     return bool(s) and all("\u4e00" <= c <= "\u9fff" for c in s)
+
+
+def proximity_score(G: nx.Graph, term: str, node: str) -> float:
+    """Score a node by its weighted proximity to term (1-hop or best 2-hop path)."""
+    if G.has_edge(term, node):
+        return float(G[term][node]["weight"])
+    return max(
+        (G[term][mid]["weight"] * G[mid][node]["weight"]
+         for mid in nx.common_neighbors(G, term, node)
+         if G.has_edge(term, mid)),
+        default=0.0,
+    )
+
+
+def prune_to_neighborhood(G: nx.Graph, term: str, max_nodes: int) -> nx.Graph:
+    """Return a subgraph of G containing term and its top max_nodes neighbours."""
+    if term not in G:
+        return G
+    ego = nx.ego_graph(G, term, radius=2)
+    scored = sorted(
+        (n for n in ego.nodes() if n != term),
+        key=lambda n: proximity_score(ego, term, n),
+        reverse=True,
+    )
+    keep = {term} | set(scored[:max_nodes])
+    return G.subgraph(keep).copy()
 
 # --- load and tokenize ---
 
@@ -105,6 +132,7 @@ print(f"Sentences with ≥2 content nodes: {len(sent_node_lists)}")
 
 G = tnet.build_cooccurrence_network(sent_node_lists, window_size=100)
 G.remove_nodes_from(list(nx.isolates(G)))
+G = prune_to_neighborhood(G, TERM, MAX_NODES)
 
 print(
     f"\nCo-occurrence — nodes: {G.number_of_nodes()}  edges: {G.number_of_edges()}")
@@ -148,6 +176,7 @@ for i, a in enumerate(node_list):
             S.add_edge(a, b, weight=float(sim_matrix[i, j]))
 
 S.remove_nodes_from(list(nx.isolates(S)))
+S = prune_to_neighborhood(S, TERM, MAX_NODES)
 
 print(
     f"\nSimilarity — nodes: {S.number_of_nodes()}  edges: {S.number_of_edges()}")
