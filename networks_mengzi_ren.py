@@ -9,7 +9,7 @@ import json
 import math
 from collections import Counter, defaultdict
 
-from config import DIST
+from config import DIST, CTEXT
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -35,7 +35,7 @@ tviz.RC_PARAMS["font.sans-serif"] = ["Noto Sans CJK JP", "sans-serif"]
 
 # --- config ---
 
-TEXT_PATH = DIST / "mengzi_6a.txt"
+TEXT_PATH = CTEXT / "mengzi_6a.txt"
 TERM = "仁"
 MIN_FREQ = 3        # minimum total occurrences to be a node
 SIM_THRESHOLD = 0.5  # minimum cosine similarity for a similarity edge

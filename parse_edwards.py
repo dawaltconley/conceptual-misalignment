@@ -2,7 +2,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from config import DIST
+from config import DIST, SEP
 
 import spacy
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ from spacy_html_tokenizer import create_html_tokenizer
 
 # parse the main text of an SEP article
 
-html_path = Path("sep/jonathan-edwards.html")
+html_path = SEP / "jonathan-edwards.html"
 html = html_path.read_text(encoding="utf-8")
 
 soup = BeautifulSoup(html, "html.parser")

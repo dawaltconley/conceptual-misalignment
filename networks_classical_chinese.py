@@ -3,7 +3,7 @@ import re
 from collections import Counter
 
 import matplotlib
-from config import DIST
+from config import DIST, CTEXT
 import matplotlib.pyplot as plt
 import networkx as nx
 import textacy.representations.network as tnet
@@ -20,7 +20,7 @@ print('font: ' + matplotlib.rcParams["font.family"])
 
 # --- config ---
 
-text_path = DIST / "mengzi_6a.txt"
+text_path = CTEXT / "mengzi_6a.txt"
 term = "仁"
 top_n = 50          # keyterms to include in networks
 yake_total = 200    # how many keyterms YAKE extracts before we take top_n

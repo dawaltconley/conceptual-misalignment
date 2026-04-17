@@ -5,11 +5,11 @@ and save it as a plain-text file suitable for parse_classical_chinese.py.
 
 import requests
 
-from config import DIST
+from config import CTEXT
 
 API_BASE = "https://api.ctext.org"
 URN = "ctp:mengzi/gaozi-i"
-OUT_PATH = DIST / "mengzi_6a.txt"
+OUT_PATH = CTEXT / "mengzi_6a.txt"
 
 
 def fetch_text(urn: str) -> dict:

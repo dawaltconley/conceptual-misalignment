@@ -4,7 +4,7 @@ from collections import Counter
 from pathlib import Path
 
 import yake
-from config import DIST
+from config import DIST, CTEXT
 import matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -22,7 +22,7 @@ matplotlib.rcParams["font.family"] = _cjk_prop.get_name()
 
 # --- load text ---
 
-text_path = DIST / "mengzi_6a.txt"
+text_path = CTEXT / "mengzi_6a.txt"
 raw_text = text_path.read_text(encoding="utf-8")
 
 # --- CLTK analysis ---
