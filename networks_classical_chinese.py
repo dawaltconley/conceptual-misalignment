@@ -1,9 +1,9 @@
 import json
 import re
 from collections import Counter
-from pathlib import Path
 
 import matplotlib
+from config import DIST
 import matplotlib.pyplot as plt
 import networkx as nx
 import textacy.representations.network as tnet
@@ -20,7 +20,7 @@ print('font: ' + matplotlib.rcParams["font.family"])
 
 # --- config ---
 
-text_path = Path("mengzi_6a.txt")
+text_path = DIST / "mengzi_6a.txt"
 term = "仁"
 top_n = 50          # keyterms to include in networks
 yake_total = 200    # how many keyterms YAKE extracts before we take top_n
@@ -114,12 +114,12 @@ else:
     )
     ax.set_title(
         f"Keyterm co-occurrence network — '{term}' highlighted", fontsize=14)
-    out = f"cooccurrence_{term}.png"
+    out = DIST / f"cooccurrence_{term}.png"
     plt.savefig(out, bbox_inches="tight", dpi=150)
     plt.close()
     print(f"  Saved {out}")
 
-    Path(f"cooccurrence_{term}.json").write_text(
+    (DIST / f"cooccurrence_{term}.json").write_text(
         json.dumps(nx.node_link_data(G), indent=2), encoding="utf-8"
     )
 
@@ -179,11 +179,11 @@ else:
                  fontsize=14)
     ax.axis("off")
     plt.tight_layout()
-    out = f"similarity_{term}.png"
+    out = DIST / f"similarity_{term}.png"
     plt.savefig(out, bbox_inches="tight", dpi=150)
     plt.close()
     print(f"  Saved {out}")
 
-    Path(f"similarity_{term}.json").write_text(
+    (DIST / f"similarity_{term}.json").write_text(
         json.dumps(nx.node_link_data(S), indent=2), encoding="utf-8"
     )

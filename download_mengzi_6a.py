@@ -3,13 +3,13 @@ Download Mengzi Book 6A (告子上, Gaozi I) from the ctext.org free API
 and save it as a plain-text file suitable for parse_classical_chinese.py.
 """
 
-from pathlib import Path
-
 import requests
+
+from config import DIST
 
 API_BASE = "https://api.ctext.org"
 URN = "ctp:mengzi/gaozi-i"
-OUT_PATH = Path("mengzi_6a.txt")
+OUT_PATH = DIST / "mengzi_6a.txt"
 
 
 def fetch_text(urn: str) -> dict:

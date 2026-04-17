@@ -2,6 +2,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from config import DIST
+
 import spacy
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -125,11 +127,11 @@ ax = tviz.draw_semantic_network(
 
 ax.set_title(
     f"Keyterm co-occurrence network — '{term}' highlighted", fontsize=14)
-out_path = f"cooccurrence_{term}.png"
+out_path = DIST / f"cooccurrence_{term}.png"
 plt.savefig(out_path, bbox_inches="tight", dpi=150)
 print(f"Network saved to {out_path}")
 
-json_path = f"cooccurrence_{term}.json"
+json_path = DIST / f"cooccurrence_{term}.json"
 Path(json_path).write_text(
     json.dumps(nx.node_link_data(G), indent=2), encoding="utf-8"
 )
@@ -189,11 +191,11 @@ ax.set_title(f"Keyterm similarity network (Jaccard) — '{term}' highlighted",
              fontsize=14)
 ax.axis("off")
 plt.tight_layout()
-out_path = f"similarity_{term}.png"
+out_path = DIST / f"similarity_{term}.png"
 plt.savefig(out_path, bbox_inches="tight", dpi=150)
 print(f"Network saved to {out_path}")
 
-json_path = f"similarity_{term}.json"
+json_path = DIST / f"similarity_{term}.json"
 Path(json_path).write_text(
     json.dumps(nx.node_link_data(S), indent=2), encoding="utf-8"
 )

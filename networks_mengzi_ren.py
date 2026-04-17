@@ -8,7 +8,8 @@ Similarity edges: cosine similarity of sentence co-occurrence context vectors.
 import json
 import math
 from collections import Counter, defaultdict
-from pathlib import Path
+
+from config import DIST
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -34,7 +35,7 @@ tviz.RC_PARAMS["font.sans-serif"] = ["Noto Sans CJK JP", "sans-serif"]
 
 # --- config ---
 
-TEXT_PATH = Path("mengzi_6a.txt")
+TEXT_PATH = DIST / "mengzi_6a.txt"
 TERM = "仁"
 MIN_FREQ = 3        # minimum total occurrences to be a node
 SIM_THRESHOLD = 0.5  # minimum cosine similarity for a similarity edge
@@ -73,16 +74,33 @@ def proximity_score(G: nx.Graph, term: str, node: str) -> float:
 
 
 def prune_to_neighborhood(G: nx.Graph, term: str, max_nodes: int) -> nx.Graph:
-    """Return a subgraph of G containing term and its top max_nodes neighbours."""
+    """Return a subgraph of G containing term and its top max_nodes neighbours.
+
+    1-hop neighbors (direct edges) are always prioritised. Any remaining
+    capacity is filled by the highest-scoring 2-hop neighbors.
+    """
     if term not in G:
         return G
-    ego = nx.ego_graph(G, term, radius=2)
-    scored = sorted(
-        (n for n in ego.nodes() if n != term),
-        key=lambda n: proximity_score(ego, term, n),
+
+    # 1-hop: sort direct neighbors by edge weight descending
+    one_hop = sorted(
+        G.neighbors(term),
+        key=lambda n: G[term][n]["weight"],
         reverse=True,
     )
-    keep = {term} | set(scored[:max_nodes])
+    keep = {term} | set(one_hop[:max_nodes])
+
+    # 2-hop: fill remaining slots
+    remaining = max_nodes - (len(keep) - 1)  # -1 to exclude term itself
+    if remaining > 0:
+        ego = nx.ego_graph(G, term, radius=2)
+        two_hop = sorted(
+            (n for n in ego.nodes() if n != term and n not in keep),
+            key=lambda n: proximity_score(ego, term, n),
+            reverse=True,
+        )
+        keep |= set(two_hop[:remaining])
+
     return G.subgraph(keep).copy()
 
 # --- load and tokenize ---
@@ -176,7 +194,7 @@ for tok, tok_freq in [(t, c) for t, c in freq.most_common() if t not in STOPWORD
 print(
     f"\nCo-occurrence — nodes: {G.number_of_nodes()}  edges: {G.number_of_edges()}")
 
-cooc_json = Path(f"cooccurrence_{TERM}.json")
+cooc_json = DIST / f"cooccurrence_{TERM}.json"
 cooc_json.write_text(json.dumps(
     nx.node_link_data(G), indent=2), encoding="utf-8")
 print(f"Saved {cooc_json}")
@@ -189,7 +207,8 @@ if G.number_of_nodes() >= 2:
         node_alpha=0.2, line_width=1.0, line_alpha=0.25, base_font_size=10,
     )
     ax.set_title(f"Co-occurrence network — '{TERM}' highlighted", fontsize=14)
-    plt.savefig(f"cooccurrence_{TERM}.png", bbox_inches="tight", dpi=150)
+    plt.savefig(DIST / f"cooccurrence_{TERM}.png",
+                bbox_inches="tight", dpi=150)
     plt.close()
 
 # --- semantic similarity network ---
@@ -220,7 +239,7 @@ S = prune_to_neighborhood(S, TERM, MAX_NODES)
 print(
     f"\nSimilarity — nodes: {S.number_of_nodes()}  edges: {S.number_of_edges()}")
 
-sim_json = Path(f"similarity_{TERM}.json")
+sim_json = DIST / f"similarity_{TERM}.json"
 sim_json.write_text(json.dumps(
     nx.node_link_data(S), indent=2), encoding="utf-8")
 print(f"Saved {sim_json}")
@@ -262,5 +281,5 @@ if S.number_of_nodes() >= 2:
         f"Semantic similarity network (cosine) — '{TERM}' highlighted", fontsize=14)
     ax.axis("off")
     plt.tight_layout()
-    plt.savefig(f"similarity_{TERM}.png", bbox_inches="tight", dpi=150)
+    plt.savefig(DIST / f"similarity_{TERM}.png", bbox_inches="tight", dpi=150)
     plt.close()
