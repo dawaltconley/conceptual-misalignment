@@ -1,16 +1,19 @@
 from collections import Counter
 
 from config import DIST, SEP
-from network_utils import draw_term_network, save_graph_json
+from network_utils import (
+    build_cosine_similarity_graph,
+    build_pmi_graph,
+    draw_term_network,
+    prune_to_neighborhood,
+    save_graph_json,
+)
 
 import spacy
-import matplotlib.pyplot as plt
 import networkx as nx
 import textacy.extract
 import textacy.extract.keyterms as kt
 import textacy.extract.triples as triples
-import textacy.representations.network as tnet
-import textacy.viz.network as tviz
 from bs4 import BeautifulSoup
 from spacy_html_tokenizer import create_html_tokenizer
 
@@ -34,6 +37,9 @@ nlp.tokenizer = create_html_tokenizer()(nlp)
 doc = nlp(article_html)
 
 term = "benevolence"
+MAX_NODES = 15
+MIN_FREQ = 22
+SIM_THRESHOLD = 0.7
 
 # --- noun chunks ---
 
@@ -90,74 +96,79 @@ for phrase, count in cooccurrences.most_common(20):
     if count > 1:
         print(f"  {count:3d}x  {phrase}")
 
-# --- co-occurrence network (whole document, target term highlighted) ---
+# --- co-occurrence network (individual words, PMI-weighted, pruned to neighborhood) ---
 
 print(f"\n{'='*60}")
-print(f"CO-OCCURRENCE NETWORK (whole document)")
+print(f"CO-OCCURRENCE NETWORK (PMI-weighted)")
 print(f"{'='*60}\n")
 
-# build per-sentence keyterm lists as input to the network builder
-top_keyterms = {phrase for phrase, _ in kt.textrank(
-    doc, normalize="lower", topn=50)}
-top_keyterms.add(term)
-
-sent_keyterm_lists = [
-    [p for p in top_keyterms if p in sent.text.lower()]
+# lemmatize and filter: content words only, no stopwords, no punctuation
+CONTENT_POS = {"NOUN", "VERB", "ADJ", "PROPN"}
+sent_token_lists = [
+    [
+        token.lemma_.lower()
+        for token in sent
+        if not token.is_stop
+        and not token.is_punct
+        and not token.is_space
+        and token.is_alpha
+        and token.pos_ in CONTENT_POS
+    ]
     for sent in doc.sents
 ]
-sent_keyterm_lists = [s for s in sent_keyterm_lists if len(s) >= 2]
 
-G = tnet.build_cooccurrence_network(sent_keyterm_lists, window_size=100)
+freq = Counter(tok for sent in sent_token_lists for tok in sent)
+nodes: set[str] = {t for t, c in freq.items() if c >= MIN_FREQ}
+nodes.add(term)
+node_list = sorted(nodes)
+
+print(f"Nodes: {len(nodes)}  (min_freq={MIN_FREQ}, after spaCy stopword filter)")
+print(
+    f"Top nodes by freq: {[t for t, _ in freq.most_common(20) if t in nodes][:15]}")
+
+sent_node_lists = [
+    [t for t in sent if t in nodes]
+    for sent in sent_token_lists
+]
+sent_node_lists = [s for s in sent_node_lists if len(s) >= 2]
+print(f"Sentences with ≥2 content nodes: {len(sent_node_lists)}")
+
+G, _, _, _ = build_pmi_graph(sent_node_lists, nodes)
 G.remove_nodes_from(list(nx.isolates(G)))
+G = prune_to_neighborhood(G, term, MAX_NODES)
 
-node_weights = tnet.rank_nodes_by_pagerank(G)
+print(
+    f"Co-occurrence — nodes: {G.number_of_nodes()}  edges: {G.number_of_edges()}")
 
-ax = tviz.draw_semantic_network(
-    G,
-    node_weights=node_weights,
-    spread=5.0,
-    draw_nodes=True,
-    base_node_size=500,
-    node_alpha=0.2,
-    line_width=1.0,
-    line_alpha=0.25,
-    base_font_size=10,
-)
-
-ax.set_title(
-    f"Keyterm co-occurrence network — '{term}' highlighted", fontsize=14)
 out_path = DIST / f"cooccurrence_{term}.png"
-plt.savefig(out_path, bbox_inches="tight", dpi=150)
+draw_term_network(
+    G, term,
+    title=f"Word co-occurrence network (PMI) — '{term}' highlighted",
+    out_path=out_path,
+)
 print(f"Network saved to {out_path}")
 
 json_path = DIST / f"cooccurrence_{term}.json"
 save_graph_json(G, json_path)
 print(f"Network JSON saved to {json_path}")
 
-# --- semantic similarity network (whole document, target term highlighted) ---
+# --- semantic similarity network (cosine, pruned to neighborhood) ---
 
 print(f"\n{'='*60}")
-print(f"SEMANTIC SIMILARITY NETWORK (whole document)")
+print(f"SEMANTIC SIMILARITY NETWORK (cosine)")
 print(f"{'='*60}\n")
 
-# tokenize each keyterm phrase for jaccard similarity
-tokenized_keyterms = [tuple(phrase.split()) for phrase in sorted(top_keyterms)]
-
-S = tnet.build_similarity_network(tokenized_keyterms, edge_weighting="jaccard")
-
-# prune very-low-similarity edges to keep graph readable
-low_edges = [(u, v) for u, v, d in S.edges(data=True) if d["weight"] < 0.2]
-S.remove_edges_from(low_edges)
+S = build_cosine_similarity_graph(sent_node_lists, node_list, SIM_THRESHOLD)
 S.remove_nodes_from(list(nx.isolates(S)))
+S = prune_to_neighborhood(S, term, MAX_NODES)
 
-# use phrase string as node label (nodes are tuples after build_similarity_network)
-label_map = {node: " ".join(node) for node in S.nodes()}
-S = nx.relabel_nodes(S, label_map)
+print(
+    f"Similarity — nodes: {S.number_of_nodes()}  edges: {S.number_of_edges()}")
 
 out_path = DIST / f"similarity_{term}.png"
 draw_term_network(
     S, term,
-    title=f"Keyterm similarity network (Jaccard) — '{term}' highlighted",
+    title=f"Word similarity network (cosine) — '{term}' highlighted",
     out_path=out_path,
 )
 print(f"Network saved to {out_path}")
